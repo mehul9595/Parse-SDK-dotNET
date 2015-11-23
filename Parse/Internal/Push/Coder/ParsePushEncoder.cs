@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Parse.Internal {
   internal class ParsePushEncoder {
@@ -36,6 +37,12 @@ namespace Parse.Internal {
       } else if (state.ExpirationInterval.HasValue) {
         payload["expiration_interval"] = state.ExpirationInterval.Value.TotalSeconds;
       }
+
+	  if (state.PushTime.HasValue) {
+		  DateTime push = state.PushTime.Value;
+		  DateTime universalTime = push.ToUniversalTime();
+		  payload["push_time"] = universalTime.ToString("yyyy-MM-ddTHH:mm:ssZ");
+	  }
 
       return payload;
     }
